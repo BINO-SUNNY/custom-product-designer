@@ -1,0 +1,355 @@
+{% extends "usernav.html" %}
+{% load static %}
+
+{% block stylecontent %}
+<style>
+    /* Fullscreen Animated Background */
+    .wallet-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    /* Floating Background Lights */
+    .wallet-container::before {
+        content: "";
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 0, 150, 0.2);
+        top: 10%;
+        left: 5%;
+        filter: blur(100px);
+        animation: moveLights 6s infinite alternate ease-in-out;
+    }
+    
+    .wallet-container::after {
+        content: "";
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: rgba(0, 255, 255, 0.2);
+        bottom: 10%;
+        right: 5%;
+        filter: blur(100px);
+        animation: moveLights 6s infinite alternate-reverse ease-in-out;
+    }
+    
+    /* Neon Glassmorphism Card */
+    .wallet-card {
+        background: rgba(229, 224, 224, 0.08);
+        padding: 40px 60px;
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(225, 209, 209, 0.3);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        text-align: center;
+        max-width: 450px;
+        width: 100%;
+        color: white;
+        position: relative;
+        animation: fadeIn 1.2s ease-in-out, rotateCard 12s infinite alternate ease-in-out;
+    }
+    
+    /* Rotating Effect for Card */
+    @keyframes rotateCard {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(10deg); }
+    }
+    
+    /* Wallet Icon */
+    .wallet-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+        text-shadow: 0 0 15px rgba(255, 0, 150, 0.8);
+        animation: bounce 1s infinite;
+    }
+    
+    /* Balance Display */
+    h3 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: white;
+    }
+    
+    p {
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    
+    /* Glowing Cyberpunk Button */
+    .wallet-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 25px;
+    }
+    
+    .wallet-btn {
+        background: linear-gradient(135deg, #ff00ff, #ff6600);
+        color: white;
+        padding: 15px 35px;
+        border-radius: 30px;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+    }
+    
+    .wallet-btn::before {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 300%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.5), transparent);
+        top: -100%;
+        left: -50%;
+        transform: rotate(25deg);
+        transition: all 0.5s ease-in-out;
+    }
+    
+    .wallet-btn:hover::before {
+        top: 100%;
+        left: 50%;
+    }
+    
+    .wallet-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 35px rgba(255, 165, 0, 1);
+    }
+    
+    .wallet-btn:disabled {
+        background: #555;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+    
+    /* Background Lights Animation */
+    @keyframes moveLights {
+        0% { transform: translateX(-20px) translateY(20px); }
+        100% { transform: translateX(20px) translateY(-20px); }
+    }
+    
+    /* Wallet Card Fade-in */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Icon Bounce Animation */
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    
+
+
+
+
+/* Success Message css */
+.hidden {
+    display: none;
+}
+
+.success-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #28a745;
+    text-align: center;
+    margin-top: 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.success-subtext {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+}
+
+#ok-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#ok-btn:hover {
+    background: #218838;
+}
+
+/* Confetti Canvas */
+#confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wallet-container">
+    <div class="wallet-card">
+        <div class="wallet-icon">💰</div>
+        <h3>Your Total Wallet Amount</h3>
+        <p>₹<span id="wallet-balance">{{ total_wallet_amount }}</span></p>
+
+        <div class="wallet-buttons">
+            <button class="wallet-btn" id="withdraw-btn" {% if total_wallet_amount < 1000 %}disabled{% endif %}>
+                Withdraw 
+            </button>
+        </div>
+
+        <p id="withdraw-message" style="margin-top: 10px;"></p>
+        <p class="loading" id="loading" style="display: none;">Processing withdrawal...</p>
+
+        <!-- Celebration Message (Hidden Initially) -->
+        <div id="success-container" class="hidden">
+            <h2 class="success-text">🎉 ₹900 Credited to Your Bank! 🎉</h2>
+            <p class="success-subtext">Enjoy your reward! 🏦✨</p>
+            <button id="ok-btn" class="wallet-btn">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confetti Effect -->
+<canvas id="confetti"></canvas>
+
+
+
+<script>
+document.getElementById("withdraw-btn").addEventListener("click", function () {
+    let withdrawBtn = document.getElementById("withdraw-btn");
+    let messageEl = document.getElementById("withdraw-message");
+    let balanceEl = document.getElementById("wallet-balance");
+    let loadingEl = document.getElementById("loading");
+    let successContainer = document.getElementById("success-container");
+    let confettiCanvas = document.getElementById("confetti");
+    
+    withdrawBtn.disabled = true;
+    messageEl.innerText = "";
+    loadingEl.style.display = "block";
+
+    fetch("{% url 'withdraw_money' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"amount": 1000})
+    })
+    .then(response => response.json())
+    .then(data => {
+        loadingEl.style.display = "none";
+        if (data.success) {
+            balanceEl.innerText = data.new_balance;
+            messageEl.innerText = "";
+            withdrawBtn.style.display = "none";
+
+            // Show Success Message and OK Button
+            successContainer.classList.remove("hidden");
+
+            // Start Confetti Effect
+            startConfetti();
+
+        } else {
+            messageEl.innerText = data.message;
+            messageEl.style.color = "red";
+            withdrawBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        loadingEl.style.display = "none";
+        messageEl.innerText = "An error occurred. Please try again later.";
+        messageEl.style.color = "red";
+        withdrawBtn.disabled = false;
+    });
+});
+
+// Confetti Effect
+let confettiInterval;
+function startConfetti() {
+    let canvas = document.getElementById("confetti");
+    let ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let confettiParticles = [];
+    let colors = ["#ff0", "#f00", "#0f0", "#00f", "#ff8000", "#ff0080"];
+
+    for (let i = 0; i < 100; i++) {
+        confettiParticles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 6 + 2,
+            d: Math.random() * 10 + 5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            tilt: Math.random() * 10 - 5
+        });
+    }
+
+    function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiParticles.forEach((p, i) => {
+            ctx.beginPath();
+            ctx.fillStyle = p.color;
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, false);
+            ctx.fill();
+            p.y += p.d / 5;
+            if (p.y > canvas.height) {
+                confettiParticles[i] = {
+                    x: Math.random() * canvas.width,
+                    y: 0,
+                    r: p.r,
+                    d: p.d,
+                    color: p.color,
+                    tilt: p.tilt
+                };
+            }
+        });
+    }
+    confettiInterval = setInterval(drawConfetti, 30);
+}
+
+// Stop Confetti on OK Button Click
+document.getElementById("ok-btn").addEventListener("click", function () {
+    clearInterval(confettiInterval);
+    let confettiCanvas = document.getElementById("confetti");
+    let successContainer = document.getElementById("success-container");
+
+    // Hide confetti and success message
+    confettiCanvas.style.display = "none";
+    successContainer.style.display = "none";
+
+    // Refresh the page
+    location.reload();
+});
+</script>
+{% endblock %}

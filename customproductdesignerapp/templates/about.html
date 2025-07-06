@@ -1,0 +1,317 @@
+{% extends "indexnav.html" %}
+{% load static %}
+
+{%block stylecontent%}
+
+{%endblock%}
+{% block content %}
+
+
+
+
+<style>
+    /* Make Navbar Full-Width */
+    .navigation {
+        width: 100vw;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        transition: all 0.4s ease-in-out;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover Effect */
+    .navigation:hover {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+    }
+
+    /* Make the Navbar Fixed on Top */
+    .navbar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        padding: 15px 0;
+    }
+
+    /* Center Content Inside Navbar */
+    .container-fluid {
+        padding: 0 5%;
+    }
+
+    /* Navbar Links */
+    .navbar-nav .nav-link {
+        color: black !important;
+        transition: color 0.3s ease-in-out;
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #ff416c !important;
+    }
+
+    /* Ensure the Body Doesn't Hide Behind Navbar */
+    body {
+        padding-top: 80px;
+    }
+</style>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light navigation">
+        <div class="container-fluid">
+            <style>
+                /* Floating Animation with More Movement */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); } /* Increased movement */
+    100% { transform: translateY(0px); }
+}
+
+/* Bounce Effect on Hover with More Height */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); } /* Increased bounce height */
+}
+
+.navbar-brand img {
+    width: 140px; /* Slightly larger for visibility */
+    transition: all 0.3s ease-in-out;
+    animation: float 3s infinite ease-in-out;
+}
+
+.navbar-brand img:hover {
+    animation: bounce 0.6s ease-in-out; /* Slightly slower for smooth effect */
+}
+
+              </style>
+              
+              <a class="navbar-brand" href="{% url '' %}">
+                  <img src="{% static 'indexstyle/images/Screenshot 2025-02-28 151015.png' %}" alt="">
+              </a>
+              
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <style>
+                    /* Stylish Navbar */
+                    .navbar-nav {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                    }
+                  
+                    .navbar-nav .nav-item {
+                        position: relative;
+                        transition: transform 0.3s ease-in-out;
+                    }
+                  
+                    /* 3D Lift Effect */
+                    .navbar-nav .nav-item:hover {
+                        transform: translateY(-3px);
+                    }
+                  
+                    /* Modern Gradient Hover & Active Effects */
+                    .navbar-nav .nav-link {
+                        font-size: 16px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        padding: 12px 18px;
+                        transition: all 0.4s ease-in-out;
+                        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        text-decoration: none;
+                        position: relative;
+                    }
+                  
+                    /* Sliding Underline */
+                    .navbar-nav .nav-link::after {
+                        content: '';
+                        position: absolute;
+                        left: 50%;
+                        bottom: -5px;
+                        width: 0%;
+                        height: 3px;
+                        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+                        transition: all 0.4s ease-in-out;
+                        transform: translateX(-50%);
+                    }
+                  
+                    .navbar-nav .nav-link:hover::after,
+                    .navbar-nav .nav-item.active .nav-link::after {
+                        width: 100%;
+                    }
+                  
+                    /* Neon Glow Effect */
+                    .navbar-nav .nav-item.active .nav-link {
+                        color: white;
+                        text-shadow: 0px 0px 10px rgba(255, 65, 108, 0.9);
+                    }
+                  
+                    /* Neon Glow on Hover */
+                    .navbar-nav .nav-link:hover {
+                        color: white;
+                        text-shadow: 0px 0px 20px rgba(255, 75, 43, 0.8);
+                    }
+                  
+                    /* Responsive Styling */
+                    @media (max-width: 768px) {
+                        .navbar-nav {
+                            flex-direction: column;
+                            text-align: center;
+                        }
+                  
+                        .navbar-nav .nav-link {
+                            display: block;
+                            padding: 12px 0;
+                        }
+                    }
+                  </style>
+                  
+                  <ul class="navbar-nav ml-auto main-nav">
+                      <li class="nav-item ">
+                          <a class="nav-link" href="{% url '' %}">Home</a>
+                      </li>
+                      <li class="nav-item active">
+                          <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                      </li>
+                  </ul>
+                  
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!--================================
+=            Page Title            =
+=================================-->
+
+<section class="page-title">
+	<!-- Container Start -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 offset-md-2 text-center">
+				<!-- Title text -->
+				<h3>About Us</h3>
+			</div>
+		</div>
+	</div>
+	<!-- Container End -->
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="about-img">
+          <img src="{% static 'indexstyle/images/about/about.jpg'%}" class="img-fluid w-100 rounded" alt="">
+        </div>
+      </div>
+      <div class="col-lg-6 pt-5 pt-lg-0">
+        <div class="about-content">
+          <h3 class="font-weight-bold">Introduction</h3>
+          <p>"Create unique products with ease! Customize your favorite items by selecting colors, patterns, and designs that match your style. Our intuitive platform lets you personalize every detail, ensuring a one-of-a-kind look. Start designing today and bring your vision to life!"</p>
+          <h3 class="font-weight-bold">How we can help</h3>
+          <p>We make custom product design simple and exciting! Whether you're personalizing apparel, accessories, or home decor, our platform offers easy-to-use tools to bring your ideas to life. Choose from a variety of templates, colors, and design elements to create something truly unique. Our team is here to ensure a seamless experience, from concept to creation, making customization effortless and enjoyable. Let’s turn your vision into reality!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="heading text-center text-capitalize font-weight-bold py-5">
+          <h2>our team</h2>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card my-3 my-lg-0">
+          <img class="card-img-top" src="{% static 'indexstyle/images/team/team1.jpg'%}" class="img-fluid w-100" alt="Card image cap">
+          <div class="card-body bg-gray text-center">
+            <h5 class="card-title">Michael Smith</h5>
+            <p class="card-text">Founder / CEO</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card my-3 my-lg-0">
+          <img class="card-img-top" src="{% static 'indexstyle/images/team/team2.jpg'%}" class="img-fluid w-100" alt="Card image cap">
+          <div class="card-body bg-gray text-center">
+            <h5 class="card-title">Sarah Johnson</h5>
+            <p class="card-text">Chief Designer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card my-3 my-lg-0">
+          <img class="card-img-top" src="{% static 'indexstyle/images/team/team3.jpg'%}" class="img-fluid w-100" alt="Card image cap">
+          <div class="card-body bg-gray text-center">
+            <h5 class="card-title">Emma Williams</h5>
+            <p class="card-text">Lead Developer</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card my-3 my-lg-0">
+          <img class="card-img-top" src="{% static 'indexstyle/images/team/team4.jpg'%}" class="img-fluid w-100" alt="Card image cap">
+          <div class="card-body bg-gray text-center">
+            <h5 class="card-title">David Martinez</h5>
+            <p class="card-text">Marketing Head</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-sm-6 my-lg-0 my-3">
+        <div class="counter-content text-center bg-light py-4 rounded">
+          <i class="fa fa-smile-o d-block"></i>
+          <span class="counter my-2 d-block" data-count="2314">120</span>
+          <h5>Happy Customers</h5>
+          </script>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 my-lg-0 my-3">
+        <div class="counter-content text-center bg-light py-4 rounded">
+          <i class="fa fa-user-o d-block"></i>
+          <span class="counter my-2 d-block" data-count="1013">180</span>
+          <h5>Active Members</h5>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 my-lg-0 my-3">
+        <div class="counter-content text-center bg-light py-4 rounded">
+          <i class="fa fa-bookmark-o d-block"></i>
+          <span class="counter my-2 d-block" data-count="2413">60</span>
+          <h5>Verified Ads</h5>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6 my-lg-0 my-3">
+        <div class="counter-content text-center bg-light py-4 rounded">
+            <i class="fa fa-truck"></i>
+          <span class="counter my-2 d-block" data-count="200">289</span>
+          <h5>Completed Orders</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

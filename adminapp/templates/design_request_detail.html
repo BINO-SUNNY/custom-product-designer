@@ -1,0 +1,148 @@
+{% extends 'adminnav.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Design Request Details</h2>
+
+    <div class="card p-4 mb-4 shadow-lg">
+      <h4 class="card-title">Customer Details</h4>
+      <p><strong>Name:</strong> {{ design_request.customer.name }}</p>
+      <p><strong>Contact number:</strong> {{ design_request.customer.phno }}</p>
+    </div>
+
+    <div class="card p-4 mb-4 shadow-lg">
+      <h4 class="card-title">Product Details</h4>
+      <p><strong>Product:</strong> {{ design_request.product.description }}</p>
+      <p><strong>Category:</strong> {{ design_request.category.name }}</p>
+      <p><strong>Size:</strong> {{ design_request.size.sizename }}</p>
+      <p><strong>Color:</strong> {{ design_request.color.colorname }}</p>
+    </div>
+
+    <div class="card p-4 mb-4 shadow-lg">
+      <h4 class="card-title">Request Information</h4>
+      <p><strong>Status:</strong> {{ design_request.status }}</p>
+      <p><strong>Request Date:</strong> {{ design_request.request_date }}</p>
+      <p><strong>Description:</strong> {{ design_request.description }}</p>
+      
+      {% if design_request.image %}
+        <p><strong>Image:</strong></p>
+        <img src="{{ design_request.image.url }}" alt="Design Image" style="max-width: 100%; height: auto; border-radius: 8px;">
+      {% else %}
+        <p>No image available</p>
+      {% endif %}
+    </div>
+
+    {% if design_request.address %}
+      <div class="card p-4 mb-4 shadow-lg">
+        <h4 class="card-title">Delivery Address</h4>
+        <p><strong>House Name:</strong> {{ design_request.address.hname }}</p>
+        <p><strong>City:</strong> {{ design_request.address.city }}</p>
+        <p><strong>District:</strong> {{ design_request.address.district }}</p>
+        <p><strong>Landmark:</strong> {{ design_request.address.landmark }}</p>
+        <p><strong>Postal Code:</strong> {{ design_request.address.pin }}</p>
+        <p><strong>Phone Number:</strong> {{ design_request.address.phonenumber }}</p>
+      </div>
+    {% endif %}
+
+    {% if design_request.gift_set.exists %}
+      <div class="card p-4 mb-4 shadow-lg">
+        <h4 class="card-title">Gift Details</h4>
+        {% for gift in design_request.gift_set.all %}
+          <p><strong>Gift Date:</strong> {{ gift.date }}</p>
+          <p><strong>Description:</strong> {{ gift.description }}</p>
+          <p><strong>Gift Note:</strong> {{ gift.gift_note }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  
+    <div class="text-center">
+      <a href="{% url 'newrequest' %}" class="btn btn-primary">Back to Design Requests</a>
+      <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#notifyModal">Notify Updations</button>
+
+    </div>
+  </div>
+  <div class="modal fade" id="notifyModal" tabindex="-1" aria-labelledby="notifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="notifyModalLabel">Notify Design Request Updates</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="notifyForm">
+            {% csrf_token %}
+            <input type="hidden" id="design_request_id" name="design_request_id" value="{{ design_request.id }}">
+            
+            <div class="mb-3">
+              <label for="expected_date" class="form-label">Expected Date</label>
+              <input type="date" class="form-control" id="expected_date" name="expected_date" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
+            </div>
+            <div class="mb-3">
+              <label for="designer" class="form-label">Select Designer</label>
+              <select class="form-control" id="designer" name="designer" required>
+                  <option value="" disabled selected>Select a designer</option>
+                  {% for designer in designers %}
+                      <option value="{{ designer.id }}">{{ designer.name }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+        $('#notifyForm').submit(function(e) {
+            e.preventDefault();  // Prevent default form submission
+    
+            // Log to check if the submit event is fired
+            console.log('Form submitted via AJAX');
+            
+            var designRequestId = $('#design_request_id').val();
+            var expectedDate = $('#expected_date').val();
+            var amount = $('#amount').val();
+            var designerId = $('#designer').val(); 
+            
+            // Log values to check if we are passing the correct data
+            console.log('Form Data:', designRequestId, expectedDate, amount);
+    
+            $.ajax({
+                url: '{% url "notify_design_request_create" %}',  // URL for handling the form submission
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',  // CSRF token
+                    design_request_id: designRequestId,
+                    expected_date: expectedDate,
+                    amount: amount, 
+                    designer_id: designerId 
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Notification created successfully and status updated to "On Process".');
+                        location.reload();  // Reload the page to reflect the changes
+                    } else {
+                        alert('Error creating the notification');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while submitting the form.');
+                }
+            });
+        });
+    });
+     </script>
+      
+{% endblock %}

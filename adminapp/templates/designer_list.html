@@ -1,0 +1,194 @@
+{% extends "adminnav.html" %}
+{%block stylecontent%}
+<style>
+    /* Modal Styling */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Container */
+#designerForm {
+    padding: 10px;
+}
+
+/* Form Labels */
+#designerForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+/* Form Inputs */
+#designerForm input[type="text"],
+#designerForm input[type="email"],
+#designerForm input[type="tel"],
+#designerForm textarea,
+#designerForm input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s ease-in-out;
+}
+
+/* Input Focus */
+#designerForm input:focus,
+#designerForm textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Textarea */
+#designerForm textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Submit Button */
+#designerForm button[type="submit"] {
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#designerForm button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* File Upload Field */
+#designerForm input[type="file"] {
+    padding: 5px;
+}
+
+/* Image Preview */
+#designerModal img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+</style>
+{%endblock%}
+{% block content %}
+    <div class="container">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#designerModal">
+            Add New Designer
+        </button>
+
+        <div class="row">
+            {% for designer in designers %}
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{ designer.photo.url }}" class="card-img-top" alt="Designer Photo">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ designer.name }}</h5>
+                            <p class="card-text">{{ designer.description }}</p>
+                            <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editDesignerModal" onclick="editDesigner({{ designer.id }})">Edit</a>
+                            <a href="{% url 'delete_designer' designer.id %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Designer -->
+<!-- Modal for Add/Edit Designer -->
+<div class="modal fade" id="designerModal" tabindex="-1" aria-labelledby="designerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="designerModalLabel">Add/Edit Designer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="designerForm" method="POST" enctype="multipart/form-data" action={%url 'add_designer'%}>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for Editing Designer -->
+<div class="modal fade" id="editDesignerModal" tabindex="-1" aria-labelledby="editDesignerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDesignerModalLabel">Edit Designer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editDesignerForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="designer_id" id="editDesignerId">
+                    
+                    <label>Name:</label>
+                    <input type="text" name="name" id="editDesignerName" class="form-control" required>
+
+                    <label>Phone Number:</label>
+                    <input type="tel" name="phonenumber" id="editDesignerPhone" class="form-control" required>
+
+                    <label>Qualification:</label>
+                    <input type="text" name="qualification" id="editDesignerQualification" class="form-control" required>
+
+                    <label>Description:</label>
+                    <textarea name="description" id="editDesignerDescription" class="form-control" required></textarea>
+
+                    <label>Photo:</label>
+                    <input type="file" name="photo" id="editDesignerPhoto" class="form-control">
+                    
+                    <div id="edit-photo-preview-container" class="mt-2"></div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function editDesigner(designerId) {
+    fetch(`/edit_designer/${designerId}/`)  // Fetch JSON from Django
+        .then(response => response.json())  // Convert response to JSON
+        .then(data => {
+            // Populate form fields with retrieved data
+            document.getElementById('editDesignerId').value = designerId;
+            document.getElementById('editDesignerName').value = data.name || '';
+            document.getElementById('editDesignerPhone').value = data.phonenumber || '';
+            document.getElementById('editDesignerQualification').value = data.qualification || '';
+            document.getElementById('editDesignerDescription').value = data.description || '';
+
+            // Handle photo preview if available
+            const photoPreviewContainer = document.getElementById('edit-photo-preview-container');
+            photoPreviewContainer.innerHTML = ''; // Clear previous preview
+            if (data.photo_url) {
+                const photoPreview = document.createElement('img');
+                photoPreview.src = data.photo_url;
+                photoPreview.style.maxWidth = '100px';
+                photoPreview.classList.add('mt-2', 'rounded');
+                photoPreviewContainer.appendChild(photoPreview);
+            }
+
+            // Set the form action to update the specific designer
+            document.getElementById('editDesignerForm').action = `/designer/edit/${designerId}/`;
+        })
+        .catch(error => console.error('Error fetching designer details:', error));
+}
+
+</script>
+    
+{% endblock %}

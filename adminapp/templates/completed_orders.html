@@ -1,0 +1,78 @@
+{% extends 'adminnav.html' %}
+{% load custom_filters %}
+{% block content %}
+
+<div id="ordersOnProcess">
+    <h3 class="mb-4">Orders On Process</h3>
+    <div class="row">
+        {% for order in orders_on_process %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Order ID: #{{ order.id }}</h5>
+                       
+                      
+                        <p class="card-text"><strong>Product Image</strong>
+                            <img src="{{ order.product.image.url }}" class="img-fluid rounded mt-2" alt="Order Image">
+                       
+                        <p class="card-text"><strong>Customer:</strong> {{ order.customer.name }}</p>
+                        <p class="card-text"><strong>Request Date:</strong> {{ order.request_date }}</p>
+                        <p class="card-text"><strong>Status:</strong> 
+                            <span class="badge bg-info">{{ order.status }}</span>
+                        </p>
+
+                        {% with notifications|get_item:order.id as notification %}
+                            {% if notification and notification.design_request.id == order.id %}
+                                <p class="card-text"><strong>Expected Delivery:</strong> {{ notification.expected_date }}</p>
+                                <p class="card-text"><strong>Amount Payable:</strong> ${{ notification.amount }}</p>
+                            {% else %}
+                                <p class="card-text"><strong>Expected Delivery:</strong> Not Available</p>
+                                <p class="card-text"><strong>Amount Payable:</strong> Not Available</p>
+                            {% endif %}
+                        {% endwith %}
+
+                        {% if order.size %}
+                            <p class="card-text"><strong>Size:</strong> {{ order.size.sizename }}</p>
+                        {% endif %}
+                        {% if order.color %}
+                            <p class="card-text"><strong>Color:</strong> {{ order.color.colorname }}</p>
+                        {% endif %}
+                        {% if order.description %}
+                            <p class="card-text"><strong>Customization Notes:</strong> {{ order.description }}</p>
+                        {% endif %}
+
+                        {% if order.image %}
+                        <p class="card-text"><strong>Image want to print</strong>
+                            <img src="{{ order.image.url }}" class="img-fluid rounded mt-2" alt="Order Image">
+                        {% endif %}
+  <!-- Delivery Address -->
+  {% with addresses|get_item:order.id as address %}
+  {% if address %}
+      <h6 class="mt-3">📍 Delivery Address:</h6>
+      <p>{{ address.hname }}, {{ address.city }}, {{ address.district }}</p>
+      <p><strong>Landmark:</strong> {{ address.landmark|default:"N/A" }}</p>
+      <p><strong>PIN Code:</strong> {{ address.pin }}</p>
+      <p><strong>Phone:</strong> {{ address.phonenumber }}</p>
+  {% endif %}
+{% endwith %}
+
+<!-- Gift Details -->
+{% with gifts|get_item:order.id as gift %}
+  {% if gift %}
+      <h6 class="mt-3">🎁 Gift Details:</h6>
+      <p><strong>Date:</strong> {{ gift.date }}</p>
+      <p><strong>Description:</strong> {{ gift.description }}</p>
+      <p><strong>Gift Note:</strong> {{ gift.gift_note|default:"No note included" }}</p>
+  {% endif %}
+{% endwith %}
+                        
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No orders are currently in process.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

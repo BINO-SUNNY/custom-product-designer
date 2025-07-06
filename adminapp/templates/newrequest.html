@@ -1,0 +1,96 @@
+{% extends 'adminnav.html' %}
+{% load static %}
+
+{% block stylecontent %}
+<!-- Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<!-- Add custom styles here -->
+<style>
+  .table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    color: black; /* Default color for text in cells */
+  }
+
+  .view-btn {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 5px;
+  }
+
+  .view-btn:hover {
+    color: #0056b3;
+    text-decoration: none;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .table th {
+    background-color: #343a40; /* Dark background for headers */
+    color: white; /* White text for headers */
+  }
+
+  .table td {
+    background-color: #f8f9fa;
+  }
+
+  .table {
+    margin-top: 20px;
+  }
+
+  .container {
+    margin-top: 20px;
+  }
+
+  .action-column {
+    width: 100px;
+  }
+
+  .view-icon {
+    margin-right: 8px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-center mb-4">Design Requests</h2>
+
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Status</th>
+          <th>Request Date</th>
+          <th class="action-column">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for request in design_requests %}
+          <tr>
+            <td>{{ request.customer.name }}</td>
+            <td>{{ request.product.description }}</td>
+            <td>{{ request.category.name }}</td>
+            <td>{{ request.size.sizename }}</td>
+            <td>{{ request.color.colorname }}</td>
+            <td>{{ request.status }}</td>
+            <td>{{ request.request_date }}</td>
+            <td class="text-center">
+              <a href="{% url 'design_request_detail_view' request.id %}" class="view-btn">
+                <i class="fas fa-eye view-icon"></i>View
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

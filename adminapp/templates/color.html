@@ -1,0 +1,140 @@
+{% extends 'adminnav.html' %}
+{% load static %}
+{% block stylecontent %}
+<style>
+    .color-form {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .color-form .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .color-form label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    .color-form input[type="text"],
+    .color-form input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+    
+    .color-form button {
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .color-form button:hover {
+        background-color: #0056b3;
+    }
+    
+    .color-cards-container {
+        margin-top: 30px;
+    }
+    
+    .color-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+    
+    .color-card-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .color-card-body {
+        padding: 15px;
+    }
+    
+    .color-card-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .delete-btn {
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 15px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    
+    .delete-btn:hover {
+        background-color: #c82333;
+    }
+
+    .color-square {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        display: inline-block;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Create Color</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'color_list' %}" class="color-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_colorname">Color Name (Hex Code):</label>
+            {{ form.colorname }} <!-- Render the 'colorname' form field -->
+        </div>
+        <div class="form-group">
+            <label for="id_image">Color Image:</label>
+            {{ form.image }} <!-- Render the 'image' form field -->
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Save Color</button>
+    </form>
+</div>
+
+<div class="color-cards-container">
+    <h2 class="text-center mt-5">Colors</h2>
+    <div class="row">
+        {% for color in colors %}
+            <div class="col-md-4">
+                <div class="color-card">
+                    <div class="color-square" style="background-color: {{ color.colorname }};"></div>
+                    <div class="color-card-body">
+                        <h5 class="color-card-title">{{ color.colorname }}</h5>
+                        <form action="{% url 'delete_color' color.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No colors added yet!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

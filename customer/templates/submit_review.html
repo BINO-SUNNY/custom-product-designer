@@ -1,0 +1,55 @@
+{% extends 'usernav.html' %}
+{%block stylecontent%}
+
+<style>
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 2rem;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: gold;
+    }
+</style>
+{%endblock%}
+{% block content %}
+<div class="container mt-4">
+    <h3>Leave a Review for Order #{{ order.id }}</h3>
+    <form action="{% url 'submit_review' order.id %}" method="post">
+        {% csrf_token %}
+        <label>Rating:</label>
+        
+        
+        <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5" required />
+            <label for="star5">★</label>
+            <input type="radio" id="star4" name="rating" value="4" />
+            <label for="star4">★</label>
+            <input type="radio" id="star3" name="rating" value="3" />
+            <label for="star3">★</label>
+            <input type="radio" id="star2" name="rating" value="2" />
+            <label for="star2">★</label>
+            <input type="radio" id="star1" name="rating" value="1" />
+            <label for="star1">★</label>
+        </div>
+        
+        <label>Review:</label>
+        <textarea name="review_text" class="form-control" rows="4"></textarea>
+        <button type="submit" class="btn btn-success mt-3">Submit Review</button>
+    </form>
+</div>
+{% endblock %}

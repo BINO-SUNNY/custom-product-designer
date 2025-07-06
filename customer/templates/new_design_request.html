@@ -1,0 +1,934 @@
+{% extends "usernav.html" %}
+{% load static %}
+
+{% block stylecontent %}
+
+
+
+
+
+<style>
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+/* Address and Gift Form Styling */
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Label Styling */
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Form Container */
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Gift Form */
+#giftDetails {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #007bff;
+    display: none;
+}
+
+/* Submit Button */
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #0099cc);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f9;
+}
+/* Address Modal Styling */
+#addressModal .modal-content {
+    border-radius: 12px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+#addressModal .modal-header {
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+#addressModal .modal-body {
+    padding: 20px;
+    background: #f8f9fa;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+#addressModal .modal-footer {
+    border-top: none;
+    padding: 15px;
+}
+
+/* Gift Details Section */
+#giftDetails {
+    display: none;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#giftDetails h4 {
+    color: #007bff;
+    font-weight: bold;
+}
+
+#giftCheckbox {
+    transform: scale(1.2);
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Category & Product Cards */
+.category-card, .product-card {
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.category-card img, .product-card img {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.category-card h5, .product-card h5 {
+    font-weight: 600;
+    padding: 10px 0;
+}
+
+.category-card:hover, .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Size & Color Options */
+.size-option {
+    display: inline-block;
+    padding: 12px 15px;
+    min-width: 60px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.size-option:hover, .size-option.selected {
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    border-color: #007bff;
+    color: white;
+}
+
+.color-option {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.color-option:hover, .color-option.selected {
+    transform: scale(1.2);
+    border-color: #007bff;
+}
+
+/* Form Styling */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    border: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #0094cc);
+}
+
+/* Template Selection */
+.template-preview {
+    max-width: 120px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.template-preview:hover, .template-preview.selected {
+    transform: scale(1.1);
+    border: 3px solid #007bff;
+}
+
+/* Image Preview */
+.image-preview {
+    max-width: 120px;
+    border-radius: 10px;
+    margin-top: 10px;
+    display: block;
+    border: 2px solid #ddd;
+}
+
+        /* Styling for category cards */
+        .category-card {
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styling for product cards */
+        .product-card {
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Size and color options */
+        .size-option {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            margin: 5px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .size-option:hover, .size-option.selected {
+            border-color: #007bff;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .color-option {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            transition: transform 0.3s ease;
+        }
+
+        .color-option:hover, .color-option.selected {
+            transform: scale(1.2);
+            border-color: #007bff;
+        }
+
+        /* Hide sections initially */
+        #products-section, #sizes-colors-section, #design-details {
+            display: none;
+        }
+
+        /* Template preview */
+        .template-preview {
+            max-width: 100px;
+            max-height: 100px;
+            display: inline-block;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .template-preview:hover {
+            border: 2px solid #007bff;
+        }
+        /* Section Styling */
+#products-section {
+    padding: 60px 20px;
+    text-align: center;
+    background:rgb(139, 117, 117);
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Product Cards */
+.product-card {
+    background:rgb(95, 72, 72);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #333;
+}
+
+/* Product Image */
+.product-card img {
+    width: 100%;
+    height: 320px; /* Set a fixed height for all images */
+    object-fit: cover; /* Ensures the image maintains aspect ratio and fills the space */
+    border-radius: 10px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+/* Product Info */
+.product-info {
+    padding-top: 15px;
+}
+
+.product-card h5 {
+    font-size: 22px;
+    color: #fff;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-card p {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 15px;
+}
+
+/* Neon Button */
+.btn-neon {
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    color: #fff;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0px 0px 15px rgba(255, 65, 108, 0.5);
+    border: none;
+}
+
+.btn-neon:hover {
+    box-shadow: 0px 0px 25px rgba(255, 75, 43, 0.8);
+}
+
+/* Hover Effects */
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 25px rgba(255, 75, 43, 0.4);
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Step 1: Select Category -->
+    <div id="categories-section">
+        <h2 class="section-title">Create Design Request</h2>
+        <h4 class="category-heading">Select a Category</h4>
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-md-3 mb-3">
+                    <div class="card category-card" onclick="loadProducts({{ category.id }})">
+                        <img src="{{ category.image.url }}" class="category-image" alt="{{ category.name }}">
+                        <h5 class="category-name">{{ category.name }}</h5>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <style>
+    /* Background Styling */
+    #categories-section {
+        padding-top: 160px;
+        padding-bottom: 60px;
+        text-align: center;
+        background: radial-gradient(circle,rgb(180, 152, 152) 30%, #111 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Glassmorphism Effect */
+    #categories-section::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(10px);
+        z-index: 0;
+        opacity: 0.2;
+    }
+    
+    /* Section Title */
+    .section-title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #fff;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Category Heading */
+    .category-heading {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffae00;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Category Cards */
+    .category-card {
+        border: none;
+        border-radius: 15px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease-in-out;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Neon Glow Effect */
+    .category-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 15px;
+        background: linear-gradient(45deg, rgba(255, 100, 100, 0.5), rgba(255, 200, 100, 0.5));
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    /* Hover Effects */
+    .category-card:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 0px 15px rgba(255, 150, 0, 0.5);
+    }
+    
+    .category-card:hover::before {
+        opacity: 1;
+    }
+    
+    /* Category Image */
+    .category-image {
+        border-radius: 10px;
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    /* Image Hover Effect */
+    .category-card:hover .category-image {
+        transform: scale(1.15);
+    }
+    
+    /* Category Name */
+    .category-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+        margin-top: 12px;
+        transition: color 0.3s ease;
+    }
+    
+    /* Change Text Color on Hover */
+    .category-card:hover .category-name {
+        color: #ffae00;
+    }
+    </style>
+    
+    
+<!--end  Step 1: Select Product -->
+     
+
+
+    <!-- Step 2: Select Product -->
+    <!-- Step 2: Select Product -->
+<div id="products-section">
+    <h4 class="section-title">Select a Product</h4>
+    <div class="row" id="products-container">
+        <!-- Product 1 -->
+        <div class="col-md-4">
+            <div class="product-card">
+                <img src="/media/Designimages/4065454474773_1.jpg" alt="Product">
+                <div class="product-info">
+                    <h5>Futuristic Jacket</h5>
+                    <p>$99.99</p>
+                    <button class="btn-neon">Select</button>
+                </div>
+            </div>
+        </div>
+        <!-- Product 2 -->
+        <div class="col-md-4">
+            <div class="product-card">
+                <img src="/media/Designimages/4065454474773_1.jpg" alt="Product">
+                <div class="product-info">
+                    <h5>Cyberpunk Hoodie</h5>
+                    <p>$89.99</p>
+                    <button class="btn-neon">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+     <!--end Step 2: Select Product -->
+    
+
+    <!-- Step 3: Choose Size & Color -->
+     
+    <div id="sizes-colors-section">
+        <h4>Select Size</h4>
+        <div id="sizes-container"></div>
+
+        <h4 class="mt-3">Select Color</h4>
+        <div id="colors-container"></div>
+        {% comment %} <h4 class="mt-3">Add Your Color</h4>
+        <div>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'upload_color_image' %}">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="id_Color_image">Template Image:</label>
+                    {{ form.Color_image }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Template</button>
+            </form> {% endcomment %}
+    </div>
+    </div>
+
+    <!--end Step 3: Select Product -->
+
+    <!-- Step 4: Enter Design Details -->
+    <div id="design-details">
+        <form method="post" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+            {% csrf_token %}
+            <input type="hidden" id="selected-category" name="category">
+            <input type="hidden" id="selected-product" name="product">
+            <input type="hidden" id="selected-size" name="size">
+            <input type="hidden" id="selected-color" name="color">
+
+            <div class="mb-3">
+                <label class="form-label">Description:</label>
+                {{ form.requestdescription }}
+            </div>
+
+            <div class="mb-3">
+                <p>image must be less than 50kb</p>
+                <label class="form-label">Upload Image:</label>
+                {{ form.image }}
+                <input type="checkbox" name="add_to_template"> Add to Templates
+                <br>
+                <img id="imagePreview" class="image-preview" style="display: none;">
+            </div>
+
+           <!-- Browse from Template Button -->
+<button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#templateModal">
+    Browse from use Templates
+</button>    <!-- Correctly targets the Free Template modal -->
+<button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#freetemplateModal" id="openFreeTemplateBtn">
+    Browse from Free Templates
+</button>
+<input type="hidden" id="selectedTemplateInput" name="selected_template">
+<img id="imagePreview" style="display:none; max-width: 150px;">
+
+
+<!-- Modal -->
+<div class="modal fade" id="templateModal" tabindex="-1" aria-labelledby="templateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="templateModalLabel">Select a Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="template-container">
+                    <!-- Templates will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- free template -->
+<div class="modal fade" id="freetemplateModal" tabindex="-1" aria-labelledby="freetemplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="freetemplateModalLabel">Select a Free Template</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="freetemplate-container">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Preview Section -->
+<div id="product-preview-container" class="text-center mt-3" style="display: none;">
+    <img id="product-preview" src="{{ white_image_url }}" class="img-fluid" alt="Product Preview" style="position: relative;">
+</div>
+
+<div class="mt-3">
+    <input type="checkbox" id="giftCheckbox" name="is_gift">
+    <input type="hidden" id="gift-status" name="is_gift" value="false">
+
+    <label for="giftCheckbox">Is this a gift?</label>
+</div>
+
+<!-- Gift Details (Hidden initially) -->
+<div id="giftDetails" style="display: none;">
+    <h4>Gift Details</h4>
+    {{ gift_form.as_p }}
+</div>
+
+<!-- Hidden input to store selected template -->
+<input type="hidden" id="selected-template" name="selected_template">
+
+
+           <!-- Submit button opens address modal -->
+<button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addressModal">
+    Submit Request
+</button>
+
+<!-- Address Modal -->
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addressModalLabel">Enter Delivery Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ address_form.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Confirm & Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gift Checkbox -->
+<!-- Add jQuery and jQuery UI -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    document.getElementById("giftCheckbox").addEventListener("change", function() {
+        let giftDetails = document.getElementById("giftDetails");
+        let giftFormFields = giftDetails.querySelectorAll("input, textarea");
+    
+        if (this.checked) {
+            giftDetails.style.display = "block";
+            document.getElementById("gift-status").value = "true";
+            giftFormFields.forEach(field => field.required = true);
+        } else {
+            giftDetails.style.display = "none";
+            document.getElementById("gift-status").value = "false";
+            giftFormFields.forEach(field => field.required = false);
+        }
+    });
+    
+</script>
+
+<script>
+    $(document).ready(function () {
+        let today = new Date();
+        let minDate = 7;  // Allow selection from 7 days later
+        let maxDate = 14; // Allow up to 14 days from today
+
+        $("#giftDatePicker").datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: minDate 
+            
+        });
+    });
+</script>
+<input type="text" id="giftDatePicker" class="form-control">
+
+
+
+<script>
+    document.getElementById("giftCheckbox").addEventListener("change", function() {
+        let giftDetails = document.getElementById("giftDetails");
+        let giftFormFields = giftDetails.querySelectorAll("input, textarea");
+    
+        // Toggle visibility of gift details and handle required attributes
+        if (this.checked) {
+            giftDetails.style.display = "block";
+            giftFormFields.forEach(field => {
+                field.required = true;  // Make the fields required when visible
+            });
+        } else {
+            giftDetails.style.display = "none";
+            giftFormFields.forEach(field => {
+                field.required = false;  // Remove the required attribute when hidden
+            });
+        }
+    
+        // Update the hidden input for the gift status
+        document.getElementById("gift-status").value = this.checked ? "true" : "false"; 
+    });
+    
+    
+</script>
+
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let templateContainer = document.getElementById("template-container");
+            let imageInput = document.getElementById("id_image");
+            let imagePreview = document.getElementById("imagePreview");
+            let addToTemplateCheckbox = document.querySelector("input[name='add_to_template']");
+            let selectedTemplateInput = document.getElementById("selected-template");
+        
+            // Load templates when modal opens
+            document.getElementById("templateModal").addEventListener("show.bs.modal", function () {
+                fetch("/get-templates/")  // URL to fetch templates
+                    .then(response => response.json())
+                    .then(data => {
+                        templateContainer.innerHTML = "";  // Clear previous templates
+                        data.templates.forEach(template => {
+                            let templateDiv = `<div class="col-md-3 mb-3">
+                                <img src="${template.image}" class="img-thumbnail template-option" data-id="${template.id}">
+                            </div>`;
+                            templateContainer.innerHTML += templateDiv;
+                        });
+        
+                        // Add event listener to each template
+                        document.querySelectorAll(".template-option").forEach(img => {
+                            img.addEventListener("click", function () {
+                                let selectedTemplate = this.getAttribute("data-id");
+                                selectedTemplateInput.value = selectedTemplate;
+                                imagePreview.src = this.src;
+                                imagePreview.style.display = "block";
+        
+                                // Disable file upload
+                                imageInput.disabled = true;
+                                imageInput.value = "";
+        
+                                // Disable 'Add to Templates' checkbox
+                                addToTemplateCheckbox.checked = false;
+                                addToTemplateCheckbox.disabled = true;
+        
+                                // Close modal
+                                let modal = bootstrap.Modal.getInstance(document.getElementById("templateModal"));
+                                modal.hide();
+                            });
+                        });
+                    });
+            });
+        
+            // Enable file upload if the user selects an image manually
+            imageInput.addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    imagePreview.src = URL.createObjectURL(this.files[0]);
+                    imagePreview.style.display = "block";
+        
+                    // Enable 'Add to Templates' checkbox
+                    addToTemplateCheckbox.disabled = false;
+        
+                    // Clear selected template
+                    selectedTemplateInput.value = "";
+                }
+            });
+        });
+        
+        
+        function loadProducts(categoryId) {
+            document.getElementById("selected-category").value = categoryId;
+            document.getElementById("products-section").style.display = "block";
+            document.getElementById("products-container").innerHTML = "";
+
+            fetch(`/get-products/${categoryId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.products.forEach(product => {
+                        let card = `<div class="col-md-3 mb-3">
+                                        <div class="card product-card p-2 text-center" onclick="loadSizesColors(${product.id})">
+                                            <img src="${product.image}" class="card-img-top" alt="${product.description}">
+                                            <h5 class="mt-2">${product.description}</h5>
+                                        </div>
+                                    </div>`;
+                        document.getElementById("products-container").innerHTML += card;
+                    });
+                });
+        }
+
+        function loadSizesColors(productId) {
+            document.getElementById("selected-product").value = productId;
+            document.getElementById("sizes-colors-section").style.display = "block";
+            document.getElementById("sizes-container").innerHTML = "";
+            document.getElementById("colors-container").innerHTML = "";
+
+            fetch(`/get-sizes-colors/${productId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.sizes.forEach(size => {
+                        let sizeDiv = `<div class="size-option" onclick="selectSize(${size.id})">${size.sizename}</div>`;
+                        document.getElementById("sizes-container").innerHTML += sizeDiv;
+                    });
+
+                    data.colors.forEach(color => {
+                        let colorDiv = `<div class="color-option" style="background-color: ${color.colorname}" onclick="selectColor('${color.id}')"></div>`;
+                        document.getElementById("colors-container").innerHTML += colorDiv;
+                    });
+                });
+
+            document.getElementById("design-details").style.display = "block";
+        }
+
+        function selectSize(sizeId) {
+            document.getElementById("selected-size").value = sizeId;
+            document.querySelectorAll('.size-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function selectColor(colorId) {
+            document.getElementById("selected-color").value = colorId;
+            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+
+        
+        document.getElementById("freetemplateModal").addEventListener("show.bs.modal", function () {
+            fetch("/get-free-templates/")
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("freetemplate-container");
+                    container.innerHTML = "";
+        
+                    data.templates.forEach(template => {
+                        let templateDiv = `
+                            <div class="col-md-3 mb-3">
+                                <img src="${template.image}" class="img-thumbnail freetemplate-option" data-id="${template.id}">
+                            </div>`;
+                        container.innerHTML += templateDiv;
+                    });
+        
+                    document.querySelectorAll(".freetemplate-option").forEach(img => {
+                        img.addEventListener("click", function () {
+                            const selectedTemplateId = this.getAttribute("data-id");
+                            const imageUrl = this.getAttribute("src");
+        
+                            // Assign values to input and preview
+                            const selectedTemplateInput = document.getElementById("selectedTemplateInput");
+                            const imagePreview = document.getElementById("imagePreview");
+        
+                            if (selectedTemplateInput && imagePreview) {
+                                selectedTemplateInput.value = selectedTemplateId;
+                                imagePreview.src = imageUrl;
+                                imagePreview.style.display = "block";
+        
+                                // Close modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById("freetemplateModal"));
+                                modal.hide();
+                            }
+                        });
+                    });
+                });
+        });
+        
+        
+    </script>
+
+{% endblock %}

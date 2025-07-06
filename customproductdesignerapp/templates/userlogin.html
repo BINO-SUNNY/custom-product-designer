@@ -1,0 +1,388 @@
+{% extends "indexnav.html" %}
+{% load static %}
+
+{%block stylecontent%}
+
+{%endblock%}
+{% block content %}
+
+
+
+
+<style>
+    /* Make Navbar Full-Width */
+    .navigation {
+        width: 100vw;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        transition: all 0.4s ease-in-out;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover Effect */
+    .navigation:hover {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+    }
+
+    /* Make the Navbar Fixed on Top */
+    .navbar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        padding: 15px 0;
+    }
+
+    /* Center Content Inside Navbar */
+    .container-fluid {
+        padding: 0 5%;
+    }
+
+    /* Navbar Links */
+    .navbar-nav .nav-link {
+        color: black !important;
+        transition: color 0.3s ease-in-out;
+        font-size: 18px;
+        padding: 10px 15px;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #ff416c !important;
+    }
+
+    /* Ensure the Body Doesn't Hide Behind Navbar */
+    body {
+        padding-top: 80px;
+    }
+</style>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light navigation">
+        <div class="container-fluid">
+            <style>
+                /* Floating Animation with More Movement */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); } /* Increased movement */
+    100% { transform: translateY(0px); }
+}
+
+/* Bounce Effect on Hover with More Height */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); } /* Increased bounce height */
+}
+
+.navbar-brand img {
+    width: 140px; /* Slightly larger for visibility */
+    transition: all 0.3s ease-in-out;
+    animation: float 3s infinite ease-in-out;
+}
+
+.navbar-brand img:hover {
+    animation: bounce 0.6s ease-in-out; /* Slightly slower for smooth effect */
+}
+
+              </style>
+              
+              <a class="navbar-brand" href="{% url '' %}">
+                  <img src="{% static 'indexstyle/images/Screenshot 2025-02-28 151015.png' %}" alt="">
+              </a>
+              
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <style>
+                    /* Stylish Navbar */
+                    .navbar-nav {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                    }
+                  
+                    .navbar-nav .nav-item {
+                        position: relative;
+                        transition: transform 0.3s ease-in-out;
+                    }
+                  
+                    /* 3D Lift Effect */
+                    .navbar-nav .nav-item:hover {
+                        transform: translateY(-3px);
+                    }
+                  
+                    /* Modern Gradient Hover & Active Effects */
+                    .navbar-nav .nav-link {
+                        font-size: 16px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        padding: 12px 18px;
+                        transition: all 0.4s ease-in-out;
+                        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        text-decoration: none;
+                        position: relative;
+                    }
+                  
+                    /* Sliding Underline */
+                    .navbar-nav .nav-link::after {
+                        content: '';
+                        position: absolute;
+                        left: 50%;
+                        bottom: -5px;
+                        width: 0%;
+                        height: 3px;
+                        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+                        transition: all 0.4s ease-in-out;
+                        transform: translateX(-50%);
+                    }
+                  
+                    .navbar-nav .nav-link:hover::after,
+                    .navbar-nav .nav-item.active .nav-link::after {
+                        width: 100%;
+                    }
+                  
+                    /* Neon Glow Effect */
+                    .navbar-nav .nav-item.active .nav-link {
+                        color: white;
+                        text-shadow: 0px 0px 10px rgba(255, 65, 108, 0.9);
+                    }
+                  
+                    /* Neon Glow on Hover */
+                    .navbar-nav .nav-link:hover {
+                        color: white;
+                        text-shadow: 0px 0px 20px rgba(255, 75, 43, 0.8);
+                    }
+                  
+                    /* Responsive Styling */
+                    @media (max-width: 768px) {
+                        .navbar-nav {
+                            flex-direction: column;
+                            text-align: center;
+                        }
+                  
+                        .navbar-nav .nav-link {
+                            display: block;
+                            padding: 12px 0;
+                        }
+                    }
+                  </style>
+                  
+                  <ul class="navbar-nav ml-auto main-nav">
+                      <li class="nav-item ">
+                          <a class="nav-link" href="{% url '' %}">Home</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                      </li>
+                  </ul>
+                  
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+    
+<section class="login py-5 border-top-1 bg">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-8 align-item-center">
+          {% comment %} <div class="border"> {% endcomment %}
+            {% comment %} /* Login Box */ {% endcomment %}
+            <style>
+
+                .bg {
+                    background:  url('{% static 'indexstyle\images\account\consumers-order-in-online-stores-consumer-society-online-stores-and-shop-on-the-internet-ecommerce-store-online-shopping-.jpg' %}');
+                    min-height: 100vh; /* Full Page Height */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                /* Login Box */
+                .login-box {
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(15px);
+                    border-radius: 15px;
+                    padding: 40px;
+                    width: 400px;
+                    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+                    text-align: center;
+                    border: 2px solid rgba(255, 255, 255, 0.2);
+                    animation: glowBorder 2s infinite alternate;
+                }
+                
+                /* Animated Border Glow */
+                @keyframes glowBorder {
+                    from {
+                        box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+                    }
+                    to {
+                        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+                    }
+                }
+                
+                /* Title */
+                .login-title {
+                    font-size: 28px;
+                    font-weight: bold;
+                    color: white;
+                    margin-bottom: 20px;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    text-shadow: 0 0 10px rgba(211, 16, 16, 0.8);
+                }
+                
+                /* Form Inputs */
+                .form-group label {
+                    color: black;
+                    font-weight: bold;
+                    display: block;
+                    text-align: left;
+                    margin-bottom: 5px;
+                }
+                
+                .form-control {
+                    background: rgba(255, 255, 255, 0.2);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    padding: 12px;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    color: white;
+                    width: 100%;
+                    transition: all 0.3s ease;
+                    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.3);
+                }
+                
+                .form-control:focus {
+                    background: rgba(255, 255, 255, 0.3);
+                    box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8);
+                    border: 1px solid rgba(0, 255, 255, 0.6);
+                }
+                
+                /* Placeholder Styling */
+                ::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+                
+                /* Button */
+                .btn-glow {
+                    background: linear-gradient(to right, #ff416c, #ff4b2b);
+                    border: none;
+                    padding: 12px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: white;
+                    border-radius: 25px;
+                    transition: 0.3s ease-in-out;
+                    cursor: pointer;
+                    width: 100%;
+                    box-shadow: 0px 0px 10px rgba(255, 65, 108, 0.6);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .btn-glow:hover {
+                    background: linear-gradient(to right, #ff4b2b, #ff416c);
+                    box-shadow: 0px 4px 15px rgba(255, 65, 108, 1);
+                    transform: scale(1.05);
+                }
+                
+                /* Register Link */
+                .register-link {
+                    color: #00ffff;
+                    font-weight: bold;
+                    text-decoration: none;
+                    transition: 0.3s ease;
+                }
+                
+                .register-link:hover {
+                    text-decoration: underline;
+                    color: #ff416c;
+                }
+                
+                /* Error Message */
+                .text-danger {
+                    background: rgba(255, 0, 0, 0.2);
+                    padding: 8px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    color: white;
+                }
+                
+                /* Mobile Optimization */
+                @media (max-width: 768px) {
+                    .login-box {
+                        width: 90%;
+                    }
+                    
+                    .btn-glow {
+                        font-size: 16px;
+                    }
+                }
+                </style>
+                
+                <div class="login-box">
+                    <h3 class="login-title">Login Now</h3>
+                    <form method="POST" action="{% url 'login_view' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_email">Email</label>
+                            <input type="email" class="form-control" id="id_email" name="email" value="{{ form.email.value }}" required>
+                            {% if form.email.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.email.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="id_password">Password</label>
+                            <input type="password" class="form-control" id="id_password" name="password" value="{{ form.password.value }}" required>
+                            {% if form.password.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.password.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                
+                        <div class="form-group">
+                            <button type="submit" class="btn-glow">Login</button>
+                        </div>
+                        <div>Forgot password <a href="{% url 'forget_link' %}" class="register-link">Get Link</a></div>
+                
+                        <div>Don’t have an account? <a href="{% url 'register' %}" class="register-link">Register</a></div>
+                
+                        {% if messages %}
+                            <div class="alert alert-danger mt-3">
+                                {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+                
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+{% endblock %}

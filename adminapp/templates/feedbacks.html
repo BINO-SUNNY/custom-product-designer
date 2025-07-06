@@ -1,0 +1,75 @@
+{% extends 'adminnav.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .feedback-wrapper {
+        max-width: 1000px;
+        margin: 30px auto;
+        background-color: #f9f9f9;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .feedback-wrapper h2 {
+        text-align: center;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
+
+    .feedback-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .feedback-table th, .feedback-table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .feedback-table th {
+        background-color: #2c3e50;
+        color: #ffffff;
+    }
+
+    .feedback-table tr:hover {
+        background-color: #ecf0f1;
+    }
+
+    .no-feedback {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+    }
+</style>
+
+<div class="feedback-wrapper">
+    <h2>📝 Customer Feedback</h2>
+
+    {% if feedbacks %}
+    <table class="feedback-table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fb in feedbacks %}
+            <tr>
+                <td>{{ fb.customer.name }}</td>
+                <td>{{ fb.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ fb.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="no-feedback">No feedback submitted.</div>
+    {% endif %}
+</div>
+{% endblock %}

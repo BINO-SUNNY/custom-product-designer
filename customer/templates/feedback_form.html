@@ -1,0 +1,139 @@
+{% extends "usernav.html" %}
+{% load static %}
+
+{% block stylecontent %}
+<style>
+    .container1 {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        padding-top: 120px;
+        padding-left: 20px;
+        padding-right: 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .feedback-form {
+        background: linear-gradient(135deg, #ffffff, #f3f3f3);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .feedback-form:hover {
+        transform: scale(1.02);
+    }
+
+    .feedback-form h2 {
+        color: #007bff;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .feedback-form p {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .feedback-form label {
+        font-weight: bold;
+        color: #333;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .feedback-form textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        transition: border 0.3s ease-in-out;
+    }
+
+    .feedback-form textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+        outline: none;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        margin-top: 15px;
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #0056b3, #003f7f);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .thank-you-message {
+        display: none;
+        margin-top: 20px;
+        padding: 12px;
+        background-color: #d4edda;
+        color: #155724;
+        border-radius: 8px;
+        border: 1px solid #c3e6cb;
+        font-weight: bold;
+        animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container1 d-flex justify-content-center">
+    <div class="feedback-form">
+        <h2>💬 We Value Your Feedback</h2>
+        <p>Your opinion helps us improve. Let us know your thoughts!</p>
+        
+        <form method="post" onsubmit="showThankYouMessage(event)">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="comment">✍️ Your Feedback:</label>
+                {{ form.comment }}
+            </div>
+            <button type="submit" class="btn-submit">🚀 Submit Feedback</button>
+        </form>
+
+        <div id="thank-you" class="thank-you-message">
+            ✅ Thank you for your feedback!
+        </div>
+    </div>
+</div>
+
+<script>
+    function showThankYouMessage(event) {
+        event.preventDefault();  // prevent default form submission
+
+        // Show thank you message
+        document.getElementById("thank-you").style.display = "block";
+
+        // Optionally disable the form
+        document.querySelector(".btn-submit").disabled = true;
+
+        // Optionally submit the form after showing the message
+        setTimeout(() => {
+            event.target.submit();
+        }, 1000); // delay form submission so user sees the message
+    }
+</script>
+{% endblock %}

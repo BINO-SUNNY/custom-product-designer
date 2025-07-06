@@ -1,0 +1,27 @@
+{% extends 'adminnav.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Orders with Status 'Payment completed'</h2>
+
+    <div class="row">
+        {% for order in payment_completed %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title">Order #{{ order.id }}</h5>
+                        <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+                        <p><strong>Product:</strong> {{ order.product.description }}</p>
+                        <p><strong>Category:</strong> {{ order.category.name }}</p>
+                        <p><strong>Status:</strong> {{ order.status }}</p>
+                        <p><strong>Request Date:</strong> {{ order.request_date }}</p>
+
+                        <!-- Button to change status to Delivered -->
+                       
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

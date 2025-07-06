@@ -1,0 +1,33 @@
+{% extends 'adminnav.html' %}
+{% block content %}
+
+<div class="container">
+    <h2 class="text-center my-4">Customer Reviews</h2>
+    
+    <div class="row">
+        {% for review in reviews %}
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Order: {{ review.order.id }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">By: {{ review.customer.username }}</h6>
+                        <p class="card-text">
+                            <strong>Rating:</strong>
+                            {% for _ in "⭐"|rjust:review.rating %}⭐{% endfor %} 
+                        </p>
+                        {% if review.review_text %}
+                            <p class="card-text">"{{ review.review_text }}"</p>
+                        {% else %}
+                            <p class="text-muted">No review text provided.</p>
+                        {% endif %}
+                        <small class="text-muted">Reviewed on: {{ review.created_at|date:"F d, Y" }}</small>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">No customer reviews available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {%block stylecontent%}
+    {%endblock%}
+<!-- Add custom styles here -->
+<!-- Font Awesome CDN -->
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('[data-menu]');
+
+            menuItems.forEach(item => {
+                const submenu = item.nextElementSibling;
+
+                item.addEventListener('click', () => {
+                    if (submenu) {
+                        submenu.classList.toggle('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-900 text-white shadow-lg p-6 min-h-screen">
+            <h2 class="text-xl font-bold mb-6">Admin Dashboard</h2>
+            <nav class="space-y-4">
+                <a href="{%url 'designer_list' %}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2m16-10a4 4 0 00-8 0m4 4a4 4 0 100-8 4 4 0 00-4 4" /></svg>
+                    Designer
+                </a>
+                <div>
+                    <a href="#" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg" data-menu>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m4 0h4M5 20h14m-7-9V9m0 0H7m5 0h5" /></svg>
+                        Design Requests
+                    </a>
+                    <ul class="ml-4 mt-2 space-y-2 hidden">
+                        <li><a href="{%url 'newrequest'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            New Request</a>
+                        </li>
+                        <li><a href="{%url 'completed_orders'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Completed Requests</a>
+                        </li>
+                        <li><a href="{%url 'orders_on_process'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8" /></svg>
+                            Request On process</a>
+                        </li>
+                        <li><a href="{%url 'payment_completed'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8" /></svg>
+                            Payment Completed</a>
+                        </li>
+                        <li><a href="{%url 'cancelled_orders'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8" /></svg>
+                            cancelled Orders</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="{% url 'add_category' %}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l4 4m0 0l4 4M4 6l4-4m0 0L4 6m12 4h4l-4 4m0 0L12 2m4 4v12h4" />
+                  </svg>
+                  Category
+              </a>
+              
+              </a><a href="{% url 'color_list'%}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18" /></svg>
+                Color
+            </a><a href="{%url 'size_list'%}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+              Size
+          </a>
+
+
+                <a href="{%url 'add_product'%}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v18m6-18v18" /></svg>
+                    Products
+                </a>
+                <div>
+                    <a href="#" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg" data-menu>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m4 0h4M5 20h14m-7-9V9m0 0H7m5 0h5" /></svg>
+                        Templates
+                    </a>
+                    <ul class="ml-4 mt-2 space-y-2 hidden">
+                        <li><a href="{%url 'customer_templates'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            customer Templates</a>
+                        </li>
+                            <li><a href="{%url 'add_free_template'%}" class="flex items-center text-gray-200 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            free template</a>
+                        </li>
+                    </div>   
+                <a href="{%url 'customer_reviews'%}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                    Reviews
+                </a>
+                <a href="{%url 'feedbacks'%}" class="flex items-center text-white hover:bg-blue-700 p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                    feedbacks
+                </a>
+                <a href="{%url 'logout'%}" class="flex items-center text-red-200 hover:bg-red-700 hover:text-white p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome, Admin</h1>
+            
+          
+            <!-- Additional Content -->
+            <div class="bg-white shadow-lg p-6 rounded-lg">
+               {%block content%} 
+              {%endblock%}          </div>
+        </main>
+    </div>
+   
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

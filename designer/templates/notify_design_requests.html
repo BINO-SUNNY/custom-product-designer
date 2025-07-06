@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notify Design Requests</title>
+    <link rel="stylesheet" href="{% static 'your_app/css/style.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 35px 45px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+
+        p {
+            font-size: 1.15rem;
+            text-align: center;
+            color: #34495e;
+            margin-bottom: 20px;
+        }
+
+        p strong {
+            color: #16a085;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f2f9ff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            margin: 0 6px;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: background 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background-color: #2980b9;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+            margin: 0 10px;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .pagination a {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+        }
+
+        .back-btn, .download-btn {
+            display: inline-block;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background-color: #e67e22;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background-color: #d35400;
+        }
+
+        .download-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* PIN Overlay Styles */
+        #pin-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #pin-box {
+            background-color: #34495e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #pin-box h3 {
+            color: #f1c40f;
+            margin-bottom: 10px;
+        }
+
+        #pin-box p {
+            color: #ecf0f1;
+            margin-bottom: 15px;
+        }
+
+        #pin-box input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 250px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        #pin-box input:focus {
+            outline: none;
+            box-shadow: 0 0 5px 2px #16a085;
+        }
+
+        #pin-box button {
+            background-color: #16a085;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #pin-box button:hover {
+            background-color: #138d75;
+        }
+
+        #error-msg {
+            margin-top: 10px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Fade-out animation */
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="pin-overlay">
+    <div id="pin-box">
+        <h3>🔒 Secure Access</h3>
+        <p>Please enter the <strong> PIN</strong> to view the page</p>
+        <input type="password" id="demoPin" placeholder="Enter PIN" autofocus onkeydown="if(event.key==='Enter'){checkPin()}">
+        <br>
+        <button onclick="checkPin()">Unlock</button>
+        <p id="error-msg"></p>
+    </div>
+</div>
+
+<a href="{% url 'designerdashboard' %}" class="back-btn">← Back to Home</a>
+
+<div class="container" id="content-to-pdf" style="display: none;">
+    <h2>Notify Design Requests for Designer</h2>
+    <p><strong>Total Credit:</strong> ₹{{ total_credit }}</p>
+    <button class="download-btn" onclick="downloadPDF()">⬇ Download</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Design Request ID</th>
+                <th>Expected Date</th>
+                <th>Amount</th>
+                <th>Credit (30%)</th>
+                <th>Credited Date</th>
+                <th>Designer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notify in page_obj %}
+                <tr>
+                    <td>{{ notify.design_request.id }}</td>
+                    <td>{{ notify.expected_date }}</td>
+                    <td>₹{{ notify.amount }}</td>
+                    <td>₹{{ notify.credit }}</td>
+                    <td>{{ notify.credited_date }}</td>
+                    <td>{{ notify.designer }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<script>
+    function checkPin() {
+        const enteredPin = document.getElementById("demoPin").value;
+        const correctPin = "1234"; // Change your demo PIN here
+        const errorMsg = document.getElementById("error-msg");
+
+        if (enteredPin === correctPin) {
+            document.getElementById("pin-overlay").style.animation = "fadeOut 0.6s ease forwards";
+            setTimeout(() => {
+                document.getElementById("pin-overlay").style.display = "none";
+                document.getElementById("content-to-pdf").style.display = "block";
+            }, 500);
+        } else {
+            errorMsg.textContent = "❌ Incorrect PIN. Please try again.";
+        }
+    }
+
+    function downloadPDF() {
+        const element = document.querySelector('#content-to-pdf');
+        const opt = {
+            margin: 0.3,
+            filename: 'design_requests_page.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+</body>
+</html>

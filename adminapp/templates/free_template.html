@@ -1,0 +1,99 @@
+{% extends 'adminnav.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .template-form {
+        background: #f9f9f9;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-img-top {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #bb2d3b;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0069d9;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+    h1, h2 {
+        color: #343a40;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Create Template</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'add_free_template' %}" class="template-form">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="id_name">Template Name:</label>
+            {{ form.name }}
+        </div>
+        <div class="form-group mb-3">
+            <label for="id_image">Template Image:</label>
+            {{ form.image }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Save Template</button>
+    </form>
+</div>
+
+<div class="container mt-5">
+    
+    <div class="row">
+        {% for template in free_template %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ template.image.url }}" alt="{{ template.name }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ template.name }}</h5>
+                        <a href="{% url 'delete_free_template' template.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p>No templates added yet!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

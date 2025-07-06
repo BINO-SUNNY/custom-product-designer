@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+
+<!--
+ // WEBSITE: https://themefisher.com
+ // TWITTER: https://twitter.com/themefisher
+ // FACEBOOK: https://www.facebook.com/themefisher
+ // GITHUB: https://github.com/themefisher/
+-->
+
+<html lang="en">
+<head>
+
+  <!-- ** Basic Page Needs ** -->
+  <meta charset="utf-8">
+  <title>CUSTOM PRODUCT DESIGNER</title>
+
+  <!-- ** Mobile Specific Metas ** -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Agency HTML Template">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="author" content="Themefisher">
+  <meta name="generator" content="Themefisher Classified Marketplace Template v1.0">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="classimax" />
+
+  <!-- favicon -->
+  <link href="{% static 'indexstyle/images/favicon.png' %}" rel="shortcut icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+  <!-- 
+  Essential stylesheets
+  =====================================-->
+  <link href="{% static 'indexstyle/plugins/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'indexstyle/plugins/bootstrap/bootstrap-slider.css' %}" rel="stylesheet">
+  <link href="{% static 'indexstyle/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'indexstyle/plugins/slick/slick.css' %}" rel="stylesheet">
+  <link href="{% static 'indexstyle/plugins/slick/slick-theme.css' %}" rel="stylesheet">
+  <link href="{% static 'indexstyle/plugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+  
+  <link href="{% static 'indexstyle/css/style.css' %}" rel="stylesheet">
+{%block stylecontent%}
+{%endblock%}
+</head>
+
+{% comment %} <body class="body-wrapper">
+
+
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-expand-lg navbar-light navigation">
+					<a class="navbar-brand" href="{%url ''%}">
+						<img src="{% static 'indexstyle/images/Screenshot 2025-02-28 124528.png' %}" alt="">
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav ml-auto main-nav ">
+							<li class="nav-item active">
+								<a class="nav-link" href="{%url ''%}">Home</a>
+							</li>
+							<li class="nav-item ">
+								<a class="nav-link" href="{%url ''%}">About Us</a>
+							</li>
+							<li class="nav-item ">
+								<a class="nav-link" href="{%url ''%}">Contact Us</a>
+							</li>
+							
+							
+							
+						</ul>
+						<ul class="navbar-nav ml-auto mt-10">
+							<li class="nav-item">
+								<a class="nav-link login-button" href="{%url 'login_view'%}">Login</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link login-button" href="{%url 'register'%}">registration</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+   
+</header> {% endcomment %}
+
+{% block content %}
+
+
+{% endblock %}
+
+<!--===============================
+=            Hero Area            =
+================================-->
+
+
+
+<!--============================
+=            Footer            =
+=============================-->
+
+<style>
+  /* Compact & Modern Footer */
+  .footer {
+      padding: 20px 0;
+      background: linear-gradient(135deg, #1e1e1e, #333);
+      color: #fff;
+      box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+  }
+
+  .footer .block h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #ff416c;
+  }
+
+  .footer .block ul {
+      padding: 0;
+      list-style: none;
+  }
+
+  .footer .block ul li {
+      margin-bottom: 4px;
+  }
+
+  .footer .block ul li a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 13px;
+      transition: 0.3s;
+  }
+
+  .footer .block ul li a:hover {
+      color: #ff416c;
+      transform: translateX(3px);
+  }
+
+  .footer .app-promotion {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+  }
+
+  .footer .app-promotion img {
+      width: 30px;
+  }
+
+  .download-btn img {
+      width: 80px;
+      transition: 0.3s;
+  }
+
+  .download-btn img:hover {
+      transform: scale(1.05);
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+      padding: 10px 0;
+      background: #111;
+      text-align: center;
+      font-size: 12px;
+  }
+
+  .footer-bottom p {
+      margin: 0;
+      color: #aaa;
+  }
+
+  .social-media-icons {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 5px;
+  }
+
+  .social-media-icons li a {
+      color: #bbb;
+      font-size: 14px;
+      padding: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      transition: 0.3s;
+  }
+
+  .social-media-icons li a:hover {
+      color: #ff416c;
+      background: rgba(255, 255, 255, 0.2);
+  }
+</style>
+
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <!-- About Section -->
+      <div class="col-lg-3 col-md-6 mb-2">
+        <div class="block about">
+          <img src="{% static 'indexstyle/images/logo-footer.png' %}" alt="logo" style="width: 90px;">
+          <p>Stay connected with us for exclusive deals!</p>
+        </div>
+      </div>
+
+      <!-- Site Pages -->
+      <div class="col-lg-2 col-md-3 col-6 mb-2">
+        <div class="block">
+          <h4>Site Pages</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Admin Pages -->
+      <div class="col-lg-2 col-md-3 col-6 mb-2">
+        <div class="block">
+          <h4>Admin Pages</h4>
+          <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Mobile App -->
+      <div class="col-lg-5 col-md-6 mb-2">
+        <div class="block-2 app-promotion">
+          <img src="{% static 'indexstyle/images/footer/phone-icon.png' %}" alt="mobile-icon">
+          <p>Download our app</p>
+        </div>
+        <div class="download-btn">
+          <a href="#"><img src="{% static 'indexstyle/images/apps/google-play-store.png' %}" alt=""></a>
+          <a href="#"><img src="{% static 'indexstyle/images/apps/apple-app-store.png' %}" alt=""></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Footer Bottom -->
+<footer class="footer-bottom">
+  <div class="container">
+    <p>&copy; <script>document.write(new Date().getFullYear())</script>. All rights reserved.</p>
+    <ul class="social-media-icons">
+      <li><a class="fa fa-facebook" href="#"></a></li>
+      <li><a class="fa fa-twitter" href="#"></a></li>
+      <li><a class="fa fa-instagram" href="#"></a></li>
+    </ul>
+  </div>
+</footer>
+
+
+
+
+
+
+
+
